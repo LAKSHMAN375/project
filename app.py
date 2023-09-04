@@ -67,11 +67,18 @@ def detect_smishing(text):
     return False
 
 def detect_fake_otp(text):
-    # Define fake OTP patterns (for demonstration purposes)
-    fake_otp_patterns = ["Your OTP is:", "Enter OTP:", "Verification code:", "OTP: 123456"]
+    # Define a list of OTP patterns
+    otp_patterns = [
+        "Your OTP is:", "Enter OTP:", "Verification code:", "OTP: 123456",
+        "OTP: 1234", "OTP: 0000", "One-Time Password:", "Your code is:",
+        "Authentication code:", "Security code:", "OTP is: 5678", "OTP - 98765",
+        "OTP code:", "OTP# 9876", "Code: 4321", "OTP 987654",
+        "Confirmation code:", "Access code: 8765", "Validation code:",
+        "Code for verification:", "Pin code: 9999", "Key is: 7654",
+    ]
     
-    # Check for fake OTP patterns
-    for pattern in fake_otp_patterns:
+    # Check for OTP patterns
+    for pattern in otp_patterns:
         if pattern in text:
             return True
     
