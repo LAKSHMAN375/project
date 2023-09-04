@@ -33,8 +33,26 @@ def clean_text(text):
 
 def detect_smishing(text):
     # Define smishing keywords or patterns
-    smishing_keywords = ["bank", "account", "password", "verify", "urgent"]
-    smishing_patterns = ["click here", "call this number", "win a prize"]
+    smishing_keywords = [
+        "bank", "account", "password", "verify", "urgent",
+        "healthcare", "insurance", "appointment", "patient",
+        "retail", "discount", "sale", "order", "product",
+        "government", "tax", "benefits", "citizenship",
+        "charity", "donation", "aid", "relief",
+        "education", "student", "school", "scholarship",
+        "technology", "security", "hack", "cyber",
+        "travel", "flight", "reservation", "hotel",
+        "social", "dating", "romance", "relationship",
+        "employment", "job", "resume", "career"
+    ]
+    
+    smishing_patterns = [
+        "click here", "call this number", "win a prize",
+        "COVID-19", "vaccine", "testing", "relief fund",
+        "package delivery", "shipping confirmation",
+        "government agency", "IRS", "immigration",
+        "tax refund"
+    ]
     
     # Check for smishing keywords
     for keyword in smishing_keywords:
@@ -43,6 +61,17 @@ def detect_smishing(text):
     
     # Check for smishing patterns
     for pattern in smishing_patterns:
+        if pattern in text:
+            return True
+    
+    return False
+
+def detect_fake_otp(text):
+    # Define fake OTP patterns (for demonstration purposes)
+    fake_otp_patterns = ["Your OTP is:", "Enter OTP:", "Verification code:", "OTP: 123456"]
+    
+    # Check for fake OTP patterns
+    for pattern in fake_otp_patterns:
         if pattern in text:
             return True
     
@@ -62,11 +91,16 @@ if st.button('Predict'):
         # 2. Detect Smishing
         is_smishing = detect_smishing(transform_text)
 
-        # 3. Vectorize
+        # 3. Detect Fake OTP
+        is_fake_otp = detect_fake_otp(transform_text)
+
+        # 4. Vectorize
         vector_input = tfidf.transform([transform_text])
 
-        # 4. Prediction
-        if is_smishing:
+        # 5. Prediction
+        if is_fake_otp:
+            st.header("Fake OTP")
+        elif is_smishing:
             st.header("Smishing (SMS Phishing)")
         else:
             result = model.predict(vector_input)
