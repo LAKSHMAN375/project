@@ -51,7 +51,7 @@ def detect_smishing(text):
         "COVID-19", "vaccine", "testing", "relief fund",
         "package delivery", "shipping confirmation",
         "government agency", "IRS", "immigration",
-        "tax refund"
+        "tax refund","This OTP will expire in 15 minutes"
     ]
     
     # Check for smishing keywords
