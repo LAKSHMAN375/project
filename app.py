@@ -75,7 +75,8 @@ def detect_fake_otp(text):
         "OTP code:", "OTP# 9876", "Code: 4321", "OTP 987654",
         "Confirmation code:", "Access code: 8765", "Validation code:",
         "Code for verification:", "Pin code: 9999", "Key is: 7654",
-        "2345 is your OTP","345678 is your OTP"
+        "2345 is your OTP","345678 is your OTP","234567 is the OTP",
+        "1234 is the OTP"
     ]
     
     # Check for OTP patterns
