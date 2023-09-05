@@ -10,11 +10,6 @@ nltk.download('stopwords')
 nltk.download('punkt')
 from nltk.stem import PorterStemmer
 
-port_stemmer = PorterStemmer()
-
-tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
-model = pickle.load(open('model.pkl', 'rb'))
-
 # Create a function to generate cleaned data from raw text
 def clean_text(text):
     # Remove URLs using regular expression
@@ -29,7 +24,7 @@ def clean_text(text):
     text = [word.lower() for word in text.split() if word.lower() not in set(stopwords.words('english'))] # Remove common English words (I, you, we,...)
     text = ' '.join(text) # Join the letters
     text = list(map(lambda x: port_stemmer.stem(x), text.split()))
-    return " ".join(text)   # error word
+    return " ".join(text)
 
 def detect_smishing(text):
     # Define smishing keywords or patterns
@@ -66,32 +61,37 @@ def detect_smishing(text):
     
     return False
 
-def detect_fake_otp(text):
-    # Define a list of OTP patterns
-    otp_patterns = [
-         "Enter OTP:", "Verification code:", "OTP: 123456",
-        "OTP: 1234", "OTP: 0000", "One-Time Password:", "Your code is:",
-        "Authentication code:", "Security code:", "OTP is: 5678", "OTP - 98765",
-        "OTP code:", "OTP# 9876", "Code: 4321", "OTP 987654",
-        "Confirmation code:", "Access code: 8765", "Validation code:",
-        "Code for verification:", "Pin code: 9999", "Key is: 7654",
-        "2345 is your OTP","345678 is your OTP","234567 is the OTP",
-        "1234 is the OTP",r'\b\d{4,6}\b',  
-        r'\b[0-9]{6}\b',  
-        r'\bcode\s*[:#]?\s*[0-9]{4,6}\b',  
-        r'\botp\s*[:#]?\s*[0-9]{4,6}\b',   
-        r'\bverification\s*[:#]?\s*[0-9]{4,6}\b',  
-        r'\bsecurity\s*[:#]?\s*[0-9]{4,6}\b', 
-    ]
-    
-    # Check for OTP patterns
-    for pattern in otp_patterns:
-        if pattern in text:
-            return True
-    
-    return False
-
 st.title('SMS Spam Classifier')
+
+# Add CSS for background image and animation
+st.markdown(
+    """
+    <style>
+    body {
+        background-image: url('images.jpeg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }
+    .spam-animation {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 100px; /* Adjust the size as needed */
+        height: 100px; /* Adjust the size as needed */
+        animation: spin 2s linear infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Add spam animation
+st.markdown('<div class="spam-animation">🚫</div>', unsafe_allow_html=True)
 
 input_sms = st.text_input("Enter the Message")
 
@@ -99,26 +99,14 @@ if st.button('Predict'):
     if input_sms == "":
         st.header('Please Enter Your Message !!!')
     else:
-        # 1. Preprocess
+        # Preprocess
         transform_text = clean_text(input_sms)
 
-        # 2. Detect Smishing
+        # Detect Smishing
         is_smishing = detect_smishing(transform_text)
 
-        # 3. Detect Fake OTP
-        is_fake_otp = detect_fake_otp(transform_text)
-
-        # 4. Vectorize
-        vector_input = tfidf.transform([transform_text])
-
-        # 5. Prediction
-        if is_fake_otp:
-            st.header("Fake OTP")
-        elif is_smishing:
+        # Prediction
+        if is_smishing:
             st.header("Smishing (SMS Phishing)")
         else:
-            result = model.predict(vector_input)
-            if result == 1:
-                st.header("Spam")
-            else:
-                st.header("Not Spam")
+            st.header("Not Spam")
