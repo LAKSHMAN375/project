@@ -1,5 +1,4 @@
 import streamlit as st
-import sklearn
 import pickle
 import string
 import re
@@ -12,7 +11,7 @@ from nltk.stem import PorterStemmer
 
 # Create a function to generate cleaned data from raw text
 def clean_text(text):
-    # Remove URLs using regular expression
+    # ... (your cleaning code here) ...
     text = re.sub(r'http\S+', '', text)
     
     text = word_tokenize(text) # Create tokens
@@ -26,8 +25,9 @@ def clean_text(text):
     text = list(map(lambda x: port_stemmer.stem(x), text.split()))
     return " ".join(text)
 
+
 def detect_smishing(text):
-    # Define smishing keywords or patterns
+    # ... (your smishing detection code here) ...
     smishing_keywords = [
         "bank", "account", "password", "verify", "urgent",
         "healthcare", "insurance", "appointment", "patient",
@@ -48,9 +48,7 @@ def detect_smishing(text):
         "government agency", "IRS", "immigration",
         "tax refund","This OTP will expire in 15 minutes"
     ]
-    
-    # Check for smishing keywords
-    for keyword in smishing_keywords:
+   for keyword in smishing_keywords:
         if keyword in text:
             return True
     
@@ -61,52 +59,72 @@ def detect_smishing(text):
     
     return False
 
+
+
+# User registration and authentication
+def register_user(username, password):
+    # You would typically store user information in a database
+    # For simplicity, we'll use a dictionary here
+    users = {"user1": "password1", "user2": "password2"}
+
+    if username in users:
+        return False  # User already exists
+    else:
+        users[username] = password
+        return True  # User successfully registered
+
+def login_user(username, password):
+    # Check if the provided username and password match
+    users = {"user1": "password1", "user2": "password2"}
+
+    if username in users and users[username] == password:
+        return True  # User successfully logged in
+    else:
+        return False  # Invalid credentials
+
 st.title('SMS Spam Classifier')
 
 # Add CSS for background image and animation
-st.markdown(
-    """
-    <style>
-    body {
-        background-image: url('images.jpeg');
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }
-    .spam-animation {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        width: 100px; /* Adjust the size as needed */
-        height: 100px; /* Adjust the size as needed */
-        animation: spin 2s linear infinite;
-    }
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+# ... (your CSS code here) ...
 
 # Add spam animation
-st.markdown('<div class="spam-animation">🚫</div>', unsafe_allow_html=True)
+# ... (your animation code here) ...
 
-input_sms = st.text_input("Enter the Message")
+# User registration form
+if st.button('Sign Up'):
+    st.subheader('User Registration')
+    new_username = st.text_input('Enter a new username:')
+    new_password = st.text_input('Enter a new password:', type='password')
+    if st.button('Register'):
+        if new_username and new_password:
+            if register_user(new_username, new_password):
+                st.success('Registration successful. Please log in.')
+            else:
+                st.warning('Username already exists. Please choose another.')
 
-if st.button('Predict'):
-    if input_sms == "":
-        st.header('Please Enter Your Message !!!')
-    else:
-        # Preprocess
-        transform_text = clean_text(input_sms)
+# User login form
+if st.button('Log In'):
+    st.subheader('User Login')
+    username = st.text_input('Enter your username:')
+    password = st.text_input('Enter your password:', type='password')
+    if st.button('Login'):
+        if username and password:
+            if login_user(username, password):
+                st.success('Login successful.')
+                input_sms = st.text_input("Enter the Message")
+                if st.button('Predict'):
+                    # Preprocess
+                    transform_text = clean_text(input_sms)
 
-        # Detect Smishing
-        is_smishing = detect_smishing(transform_text)
+                    # Detect Smishing
+                    is_smishing = detect_smishing(transform_text)
 
-        # Prediction
-        if is_smishing:
-            st.header("Smishing (SMS Phishing)")
-        else:
-            st.header("Not Spam")
+                    # Prediction
+                    if is_smishing:
+                        st.header("Smishing (SMS Phishing)")
+                    else:
+                        st.header("Not Spam")
+            else:
+                st.warning('Invalid credentials. Please try again.')
+
+
