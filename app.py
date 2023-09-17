@@ -48,7 +48,7 @@ def detect_smishing(text):
         "government agency", "IRS", "immigration",
         "tax refund","This OTP will expire in 15 minutes"
     ]
-   for keyword in smishing_keywords:
+    for keyword in smishing_keywords:
         if keyword in text:
             return True
     
