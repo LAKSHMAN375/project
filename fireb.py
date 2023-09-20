@@ -14,7 +14,7 @@ from firebase_admin import credentials
 from firebase_admin import auth
 
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate("smsspam-d94e5-firebase-adminsdk-m4lu0-5b94c7194e.json")
+cred = credentials.Certificate("smsspam-d94e5-firebase-adminsdk-m4lu0-e012df354e.json")
 firebase_admin.initialize_app(cred)
 
 # Create a function to generate cleaned data from raw text
