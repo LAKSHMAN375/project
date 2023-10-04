@@ -23,19 +23,26 @@ def clean_text(text):
     text = ' '.join(text)  # Join the letters
     return text
 
-# Define patterns for SMS detection
-sms_patterns = [
-    "Account Verification Scam:",
-    "Prize or Lottery Scam:",
-    "Tech Support Scam:",
-    "Bank Fraud Alert:",
-    "Tax Scam:",
-    "Service Cancellation Scam:",
-    "Malicious App Download Scam:",
-]
+# Define a function to detect patterns in the text
+def detect_patterns(text):
+    patterns = [
+        r".*(bank|account|unusual activity|verify|details|unauthorized).*",
+        r".*(won|prize|lottery|claim|processing fee).*",
+        r".*(tech support|malware|infected|call|immediate assistance).*",
+        r".*(urgent|bank|unusual activity|secure|transactions).*",
+        r".*(tax notice|unclaimed tax refund|social security number|bank details).*",
+        r".*(subscription|canceled|payment issue|update payment details|disruption).*",
+        r".*(unlock|premium features|download|app|unlimited access).*"
+    ]
+    
+    for pattern in patterns:
+        if re.match(pattern, text, re.IGNORECASE):
+            return True
+    
+    return False
 
 # Create a Streamlit app
-st.title('SMS Pattern Detector')
+st.title('SMS Spam Classifier')
 
 input_sms = st.text_area("Enter the Message")
 
@@ -46,28 +53,18 @@ if st.button('Detect'):
         # Preprocess the input SMS
         cleaned_sms = clean_text(input_sms)
 
-        # Vectorize the input
-        vector_input = tfidf.transform([cleaned_sms])
-
-        # Make a prediction
-        result = model.predict(vector_input)
-
-        # Display the prediction
-        if result == 1:
-            st.header("Spam")
+        # Check for patterns
+        if detect_patterns(cleaned_sms):
+            st.header("Potential Smishing Message")
         else:
-            st.header("Not Spam")
+            # Vectorize the input
+            vector_input = tfidf.transform([cleaned_sms])
 
-        # Check for specific patterns
-        detected_patterns = []
-        for pattern in sms_patterns:
-            if pattern in input_sms:
-                detected_patterns.append(pattern)
+            # Make a prediction
+            result = model.predict(vector_input)
 
-        if detected_patterns:
-            st.subheader("Detected Patterns:")
-            for pattern in detected_patterns:
-                st.write(pattern)
-
-        if not result and not detected_patterns:
-            st.write("No specific patterns detected.")
+            # Display the prediction
+            if result == 1:
+                st.header("Spam")
+            else:
+                st.header("Not Spam")
