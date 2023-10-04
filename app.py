@@ -1,22 +1,20 @@
 import streamlit as st
-import sklearn
-import pickle
 import string
 import re
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize, sent_tokenize
-nltk.download('stopwords')
+import pickle
+
+# Download required nltk resources (you can run this once)
 nltk.download('punkt')
-from nltk.stem import PorterStemmer
+nltk.download('stopwords')
 
-port_stemmer = PorterStemmer()
-
+# Load the TF-IDF vectorizer and model
 tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
 model = pickle.load(open('model.pkl', 'rb'))
 
-# Create a function to generate cleaned data from raw text
- Define a function to clean and preprocess the text
+# Define a function to clean and preprocess the text
 def clean_text(text):
     text = re.sub(r'http\S+', '', text)
     text = word_tokenize(text)  # Tokenize
@@ -47,30 +45,30 @@ def detect_patterns(text):
     
     return False
 
-
+# Create a Streamlit app
 st.title('SMS Spam Classifier')
 
-input_sms = st.text_input("Enter the Message")
+input_sms = st.text_area("Enter the Message")
 
-if st.button('Predict'):
-
+if st.button('Detect'):
     if input_sms == "":
         st.header('Please Enter Your Message !!!')
-
     else:
+        # Preprocess the input SMS
+        cleaned_sms = clean_text(input_sms)
 
-        # 1. Preprocess
-        transform_text = clean_text(input_sms)
-
-        # 2. Vectorize
-        vector_input = tfidf.transform([transform_text])
-
-        # 3. Prediction
-        result = model.predict(vector_input)
-
-        # 4. Display
-
-        if result == 1:
-            st.header("Spam")
+        # Check for patterns
+        if detect_patterns(cleaned_sms):
+            st.header("Potential Smishing Message")
         else:
-            st.header("Not Spam")
+            # Vectorize the input
+            vector_input = tfidf.transform([cleaned_sms])
+
+            # Make a prediction
+            result = model.predict(vector_input)
+
+            # Display the prediction
+            if result == 1:
+                st.header("Spam")
+            else:
+                st.header("Not Spam")
