@@ -14,7 +14,7 @@ model = pickle.load(open('model.pkl', 'rb'))
 # Load your dataset
 data = pd.read_excel("SMSSpamCollection.xlsx", header=None)
 data.rename(columns={0: 'Category', 1: 'Email Text'}, inplace=True)
-last_10_messages = data.tail(10)['Email Text'].tolist()
+last_10_messages = data.tail(22)['Email Text'].tolist()
 
 # Define a function to clean and preprocess the text
 def clean_text(text):
