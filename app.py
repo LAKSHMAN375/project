@@ -16,18 +16,36 @@ tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
 model = pickle.load(open('model.pkl', 'rb'))
 
 # Create a function to generate cleaned data from raw text
-
+ Define a function to clean and preprocess the text
 def clean_text(text):
-    text = word_tokenize(text) # Create tokens
-    text= " ".join(text) # Join tokens
-    text = [char for char in text if char not in string.punctuation] # Remove punctuations
-    text = ''.join(text) # Join the leters
-    text = [char for char in text if char not in re.findall(r"[0-9]", text)] # Remove Numbers
-    text = ''.join(text) # Join the leters
-    text = [word.lower() for word in text.split() if word.lower() not in set(stopwords.words('english'))] # Remove common english words (I, you, we,...)
-    text = ' '.join(text) # Join the leters
-    text = list(map(lambda x: port_stemmer.stem(x), text.split()))
-    return " ".join(text)   # error word
+    text = re.sub(r'http\S+', '', text)
+    text = word_tokenize(text)  # Tokenize
+    text = " ".join(text)  # Join tokens
+    text = [char for char in text if char not in string.punctuation]  # Remove punctuation
+    text = ''.join(text)  # Join the letters
+    text = [char for char in text if char not in re.findall(r"[0-9]", text)]  # Remove numbers
+    text = ''.join(text)  # Join the letters
+    text = [word.lower() for word in text.split() if word.lower() not in set(stopwords.words('english'))]  # Remove stopwords
+    text = ' '.join(text)  # Join the letters
+    return text
+
+# Define a function to detect patterns in the text
+def detect_patterns(text):
+    patterns = [
+        r".*(bank|account|unusual activity|verify|details|unauthorized).*",
+        r".*(won|prize|lottery|claim|processing fee).*",
+        r".*(tech support|malware|infected|call|immediate assistance).*",
+        r".*(urgent|bank|unusual activity|secure|transactions).*",
+        r".*(tax notice|unclaimed tax refund|social security number|bank details).*",
+        r".*(subscription|canceled|payment issue|update payment details|disruption).*",
+        r".*(unlock|premium features|download|app|unlimited access).*"
+    ]
+    
+    for pattern in patterns:
+        if re.match(pattern, text, re.IGNORECASE):
+            return True
+    
+    return False
 
 
 st.title('SMS Spam Classifier')
