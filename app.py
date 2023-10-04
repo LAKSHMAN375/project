@@ -1,70 +1,58 @@
 import streamlit as st
+import sklearn
+import pickle
 import string
 import re
 import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
-import pickle
+from nltk.tokenize import word_tokenize, sent_tokenize
+nltk.download('stopwords')
+nltk.download('punkt')
+from nltk.stem import PorterStemmer
 
-# Load the TF-IDF vectorizer and model
+port_stemmer = PorterStemmer()
+
 tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
 model = pickle.load(open('model.pkl', 'rb'))
 
-# Define a function to clean and preprocess the text
+# Create a function to generate cleaned data from raw text
+
 def clean_text(text):
-    text = re.sub(r'http\S+', '', text)
-    text = word_tokenize(text)  # Tokenize
-    text = " ".join(text)  # Join tokens
-    text = [char for char in text if char not in string.punctuation]  # Remove punctuation
-    text = ''.join(text)  # Join the letters
-    text = [char for char in text if char not in re.findall(r"[0-9]", text)]  # Remove numbers
-    text = ''.join(text)  # Join the letters
-    text = [word.lower() for word in text.split() if word.lower() not in set(stopwords.words('english'))]  # Remove stopwords
-    text = ' '.join(text)  # Join the letters
-    return text
+    text = word_tokenize(text) # Create tokens
+    text= " ".join(text) # Join tokens
+    text = [char for char in text if char not in string.punctuation] # Remove punctuations
+    text = ''.join(text) # Join the leters
+    text = [char for char in text if char not in re.findall(r"[0-9]", text)] # Remove Numbers
+    text = ''.join(text) # Join the leters
+    text = [word.lower() for word in text.split() if word.lower() not in set(stopwords.words('english'))] # Remove common english words (I, you, we,...)
+    text = ' '.join(text) # Join the leters
+    text = list(map(lambda x: port_stemmer.stem(x), text.split()))
+    return " ".join(text)   # error word
 
-# Define a function to detect patterns in the text
-def detect_patterns(text):
-    patterns = [
-        r".*(bank|account|unusual activity|verify|details|unauthorized).*",
-        r".*(won|prize|lottery|claim|processing fee).*",
-        r".*(tech support|malware|infected|call|immediate assistance).*",
-        r".*(urgent|bank|unusual activity|secure|transactions).*",
-        r".*(tax notice|unclaimed tax refund|social security number|bank details).*",
-        r".*(subscription|canceled|payment issue|update payment details|disruption).*",
-        r".*(unlock|premium features|download|app|unlimited access).*"
-    ]
-    
-    for pattern in patterns:
-        if re.match(pattern, text, re.IGNORECASE):
-            return True
-    
-    return False
 
-# Create a Streamlit app
 st.title('SMS Spam Classifier')
 
-input_sms = st.text_area("Enter the Message")
+input_sms = st.text_input("Enter the Message")
 
-if st.button('Detect'):
+if st.button('Predict'):
+
     if input_sms == "":
         st.header('Please Enter Your Message !!!')
+
     else:
-        # Preprocess the input SMS
-        cleaned_sms = clean_text(input_sms)
 
-        # Check for patterns
-        if detect_patterns(cleaned_sms):
-            st.header("Potential Smishing Message")
+        # 1. Preprocess
+        transform_text = clean_text(input_sms)
+
+        # 2. Vectorize
+        vector_input = tfidf.transform([transform_text])
+
+        # 3. Prediction
+        result = model.predict(vector_input)
+
+        # 4. Display
+
+        if result == 1:
+            st.header("Spam")
         else:
-            # Vectorize the input
-            vector_input = tfidf.transform([cleaned_sms])
-
-            # Make a prediction
-            result = model.predict(vector_input)
-
-            # Display the prediction
-            if result == 1:
-                st.header("Spam")
-            else:
-                st.header("Not Spam")
+            st.header("Not Spam")
