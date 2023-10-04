@@ -11,51 +11,64 @@ import pickle
 tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
 model = pickle.load(open('model.pkl', 'rb'))
 
-uploaded_file = st.file_uploader("Choose a file")
-# Load your dataset
+uploaded_file = st.file_uploader("Choose a file", type=["xlsx"])
+data = None
 
-data = pd.read_excel(uploaded_file)
-data.rename(columns={0: 'Category', 1: 'Email Text'}, inplace=True)
-last_10_messages = data.tail(22)['Email Text'].tolist()
+# Check if a file is uploaded
+if uploaded_file:
+    try:
+        # Load the dataset from the uploaded file
+        data = pd.read_excel(uploaded_file, header=None)
+        data.rename(columns={0: 'Category', 1: 'Email Text'}, inplace=True)
+    except Exception as e:
+        st.error(f"Error: {e}")
+        st.stop()  # Stop execution if there's an error
 
-# Define a function to clean and preprocess the text
-def clean_text(text):
-    text = re.sub(r'http\S+', '', text)
-    text = word_tokenize(text)  # Tokenize
-    text = " ".join(text)  # Join tokens
-    text = [char for char in text if char not in string.punctuation]  # Remove punctuation
-    text = ''.join(text)  # Join the letters
-    text = [char for char in text if char not in re.findall(r"[0-9]", text)]  # Remove numbers
-    text = ''.join(text)  # Join the letters
-    text = [word.lower() for word in text.split() if word.lower() not in set(stopwords.words('english'))]  # Remove stopwords
-    text = ' '.join(text)  # Join the letters
-    return text
+# Check if data is loaded
+if data is None:
+    st.warning("Upload an Excel file to continue.")
+else:
+    # Get the last 10 messages
+    last_10_messages = data.tail(10)['Email Text'].tolist()
 
-# Create a Streamlit app
-st.title('SMS Spam Classifier')
+    # Define a function to clean and preprocess the text
+    def clean_text(text):
+        text = re.sub(r'http\S+', '', text)
+        text = word_tokenize(text)  # Tokenize
+        text = " ".join(text)  # Join tokens
+        text = [char for char in text if char not in string.punctuation]  # Remove punctuation
+        text = ''.join(text)  # Join the letters
+        text = [char for char in text if char not in re.findall(r"[0-9]", text)]  # Remove numbers
+        text = ''.join(text)  # Join the letters
+        text = [word.lower() for word in text.split() if word.lower() not in set(stopwords.words('english'))]  # Remove stopwords
+        text = ' '.join(text)  # Join the letters
+        return text
 
-input_sms = st.text_input("Enter the Message")
+    # Create a Streamlit app
+    st.title('SMS Spam Classifier')
 
-if st.button('Predict'):
-    if input_sms == "":
-        st.header('Please Enter Your Message !!!')
-    else:
-        # Preprocess the input SMS
-        cleaned_sms = clean_text(input_sms)
+    input_sms = st.text_input("Enter the Message")
 
-        # Check for keywords in the last 10 messages
-        contains_keyword = any(keyword in " ".join(last_10_messages).lower() for keyword in cleaned_sms.split())
-
-        # Vectorize the input
-        vector_input = tfidf.transform([cleaned_sms])
-
-        # Make a prediction
-        result = model.predict(vector_input)
-
-        # Display the prediction
-        if contains_keyword:
-            st.header("Potential Smishing Message")
-        elif result == 1:
-            st.header("Spam")
+    if st.button('Predict'):
+        if input_sms == "":
+            st.header('Please Enter Your Message !!!')
         else:
-            st.header("Not Spam")
+            # Preprocess the input SMS
+            cleaned_sms = clean_text(input_sms)
+
+            # Check for keywords in the last 10 messages
+            contains_keyword = any(keyword in " ".join(last_10_messages).lower() for keyword in cleaned_sms.split())
+
+            # Vectorize the input
+            vector_input = tfidf.transform([cleaned_sms])
+
+            # Make a prediction
+            result = model.predict(vector_input)
+
+            # Display the prediction
+            if contains_keyword:
+                st.header("Potential Smishing Message")
+            elif result == 1:
+                st.header("Spam")
+            else:
+                st.header("Not Spam")
