@@ -11,7 +11,8 @@ import pickle
 tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
 model = pickle.load(open('model.pkl', 'rb'))
 
-uploaded_file = st.file_uploader(“Choose a file”)# Load your dataset
+uploaded_file = st.file_uploader("Choose a file")
+# Load your dataset
 
 data = pd.read_excel(uploaded_file)
 data.rename(columns={0: 'Category', 1: 'Email Text'}, inplace=True)
