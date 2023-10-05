@@ -31,7 +31,7 @@ def clean_text(text):
 def detect_patterns(text):
     patterns = [
         r".*(bank|account|unusual activity|verify|details|unauthorized).*",
-        r".*(won|prize|lottery|claim|processing fee).*",
+        r".*(won|prize|lottery|claim|processing fee|offer is valid|game cash|free cash).*",
         r".*(tech support|malware|infected|call|immediate assistance).*",
         r".*(urgent|bank|unusual activity|secure|transactions).*",
         r".*(tax notice|unclaimed tax refund|social security number|bank details).*",
