@@ -1,14 +1,11 @@
+
 import streamlit as st
 import string
 import re
 import nltk
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize, sent_tokenize
+from nltk.tokenize import word_tokenize
 import pickle
-
-# Download required nltk resources (you can run this once)
-nltk.download('punkt')
-nltk.download('stopwords')
 
 # Load the TF-IDF vectorizer and model
 tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
@@ -31,7 +28,7 @@ def clean_text(text):
 def detect_patterns(text):
     patterns = [
         r".*(bank|account|unusual activity|verify|details|unauthorized).*",
-        r".*(won|prize|lottery|claim|processing fee|offer is valid|game cash|free cash).*",
+        r".*(won|prize|lottery|claim|processing fee||offer is valid|| free cash).*",
         r".*(tech support|malware|infected|call|immediate assistance).*",
         r".*(urgent|bank|unusual activity|secure|transactions).*",
         r".*(tax notice|unclaimed tax refund|social security number|bank details).*",
@@ -59,7 +56,7 @@ if st.button('Detect'):
 
         # Check for patterns
         if detect_patterns(cleaned_sms):
-            st.header("Spam Message")
+            st.header("Spam")
         else:
             # Vectorize the input
             vector_input = tfidf.transform([cleaned_sms])
