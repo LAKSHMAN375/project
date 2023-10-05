@@ -59,7 +59,7 @@ if st.button('Detect'):
 
         # Check for patterns
         if detect_patterns(cleaned_sms):
-            st.header("Potential Smishing Message")
+            st.header("Spam Message")
         else:
             # Vectorize the input
             vector_input = tfidf.transform([cleaned_sms])
