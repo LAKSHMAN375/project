@@ -10,6 +10,9 @@ import pickle
 # Load the TF-IDF vectorizer and model
 tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
 model = pickle.load(open('model.pkl', 'rb'))
+nltk.download('punkt')
+nltk.download('stopwords')
+
 
 # Define a function to clean and preprocess the text
 def clean_text(text):
