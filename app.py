@@ -64,5 +64,4 @@ if st.button('Detect'):
                 st.header("Spam")
             else:
                 st.header("Not Spam")
-        else:
-            st.header("Enter Correct Pattern")
+        
