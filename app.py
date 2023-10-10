@@ -63,7 +63,9 @@ if st.button('Detect'):
             # Make a prediction
             result = model.predict(vector_input)
             # Display the prediction
-            if result == 1:
+            if result >= 1:
                 st.header("Spam")
+            else:
+                st.header("Not Spam")
         else:
             st.header("Enter Correct Pattern")
