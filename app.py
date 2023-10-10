@@ -10,17 +10,20 @@ import pickle
 tfidf = pickle.load(open('tfidf_vectorizer.pkl', 'rb'))
 model = pickle.load(open('sms_spam_classifier.pkl', 'rb'))
 
+# Define the patterns
+patterns = [
+    r".*(bank|account|unusual activity|verify|details|unauthorized).*",
+    r".*(won|prize|lottery|claim|processing fee|offer is valid|free cash).*",
+    r".*(tech support|malware|infected|call|immediate assistance).*",
+    r".*(urgent|bank|unusual activity|secure|transactions).*",
+    r".*(tax notice|unclaimed tax refund|social security number|bank details).*",
+    r".*(subscription|canceled|payment issue|update payment details|disruption).*",
+    r".*(unlock|premium features|download|app|unlimited access).*"
+]
+
 # Define a function to clean and preprocess the text
 def clean_text(text):
-    text = re.sub(r'http\S+', '', text)
-    text = word_tokenize(text)  # Tokenize
-    text = " ".join(text)  # Join tokens
-    text = [char for char in text if char not in string.punctuation]  # Remove punctuation
-    text = ''.join(text)  # Join the letters
-    text = [char for char in text if char not in re.findall(r"[0-9]", text)]  # Remove numbers
-    text = ''.join(text)  # Join the letters
-    text = [word.lower() for word in text.split() if word.lower() not in set(stopwords.words('english'))]  # Remove stopwords
-    text = ' '.join(text)  # Join the letters
+    # ... (rest of your code remains the same)
     return text
 
 # Create a Streamlit app
