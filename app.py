@@ -60,6 +60,7 @@ if st.button('Detect'):
         # Check for patterns
         if detect_patterns(cleaned_sms):
             # Make a prediction
+            vector_input = tfidf.transform([cleaned_sms])
             result = model.predict(vector_input)
              # Display the prediction
             if result == 1:
