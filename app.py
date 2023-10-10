@@ -7,8 +7,8 @@ from nltk.tokenize import word_tokenize
 import pickle
 
 # Load the TF-IDF vectorizer and model
-tfidf = pickle.load(open('tfidf_vectorizer.pkl', 'rb'))
-model = pickle.load(open('sms_spam_classifier.pkl', 'rb'))
+tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
+model = pickle.load(open('model.pkl', 'rb'))
 
 # Define the patterns
 patterns = [
