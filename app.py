@@ -57,10 +57,13 @@ if st.button('Detect'):
 
         # Check for patterns
         if detect_patterns(cleaned_sms):
+            # Vectorize the input
+            vector_input = tfidf.transform([cleaned_sms])
+
             # Make a prediction
             result = model.predict(vector_input)
             # Display the prediction
-            if result == 1:
+            if result[0] == 1:
                 st.header("Spam")
             else:
                 st.header("Not Spam")
