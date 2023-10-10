@@ -65,7 +65,5 @@ if st.button('Detect'):
             # Display the prediction
             if result == 1:
                 st.header("Spam")
-            else:
-                st.header("Not Spam")
         else:
             st.header("Enter Correct Pattern")
