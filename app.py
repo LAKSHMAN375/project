@@ -1,4 +1,3 @@
-
 import streamlit as st
 import string
 import re
@@ -12,7 +11,6 @@ tfidf = pickle.load(open('vectorizer.pkl', 'rb'))
 model = pickle.load(open('model.pkl', 'rb'))
 nltk.download('punkt')
 nltk.download('stopwords')
-
 
 # Define a function to clean and preprocess the text
 def clean_text(text):
@@ -31,7 +29,7 @@ def clean_text(text):
 def detect_patterns(text):
     patterns = [
         r".*(bank|account|unusual activity|verify|details|unauthorized).*",
-        r".*(won|prize|lottery|claim|processing fee||offer is valid|| free cash).*",
+        r".*(won|prize|lottery|claim|processing fee|offer is valid|free cash).*",
         r".*(tech support|malware|infected|call|immediate assistance).*",
         r".*(urgent|bank|unusual activity|secure|transactions).*",
         r".*(tax notice|unclaimed tax refund|social security number|bank details).*",
@@ -60,12 +58,11 @@ if st.button('Detect'):
         # Check for patterns
         if detect_patterns(cleaned_sms):
             # Make a prediction
-            vector_input = tfidf.transform([cleaned_sms])
             result = model.predict(vector_input)
-             # Display the prediction
+            # Display the prediction
             if result == 1:
                 st.header("Spam")
             else:
                 st.header("Not Spam")
         else:
-          st.header("Enter Correct Pattern")
+            st.header("Enter Correct Pattern")
