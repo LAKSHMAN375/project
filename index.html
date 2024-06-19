@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOCU</title>
+<style>
+    .mystyle {
+        border-radius: 2px;
+        box-shadow: 0.5px 4px 5px lightblue;
+    }
+    h1{
+            color: black;
+            font-size: 50px;
+            text-shadow: -1px 2px 0 #000,
+                1px 2px 0 #000,
+                2px -1px 0 #000,
+                -1px -1px 0 #000;
+        }
+        h3{
+            color: black;
+            font-size: 50px;
+            text-shadow: -1px 0px 0 #000,
+                1px 1px 0 #000,
+                1px -1px 0 #000,
+                -1px -1px 0 #000;
+        }
+        h5{
+            color: black;
+            font-size: 40px;
+            text-shadow: -1px 1px 1px #000,
+                1px 1px 1px #000,
+                1px -1px 1px #000,
+                -1px -1px 1px #000;
+        }
+    
+    
+</style>    
+    <link rel="stylesheet" href=
+    "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-dark navbar-expand-md mystyle">
+        <square style="border:1px white solid">
+            <button class="color-button ms-auto" id="toggleButton" onclick="toggleTheme()"> MODE</button>
+        
+        </square>
+        <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#menu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+         <script>
+            let isLightBlue = true;
+    
+            function toggleTheme() {
+                document.body.style.backgroundColor = isLightBlue ? 'white'  : '#1C1C1BFF';
+                isLightBlue = !isLightBlue;
+            }
+    
+            // Set the initial background color
+            document.body.style.backgroundColor = '#1C1C1BFF';
+
+            
+        </script>
+        <div class="collapse navbar-collapse mt-3 " id="menu">
+            
+            <ul class="navbar-nav ms-auto">
+                <a href="#" class="navbar-brand">LT</a>
+                <li class="dropdown nav-item">
+                    <a href="#" class="nav-link active dropdown-toggle" data-bs-toggle="dropdown">PROJECTS</a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item bg-light text"><a href="Projects.html">WEB PROJECTS</a></li>
+                        <li class="dropdown-item bg-light"><a href="Projects.html">FIGMA DESIGNS</a></li>        
+                       </ul></li>
+                <li class="nav-item">
+                    <a href="#SKILLS" class="nav-link active">SKILLS</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#Contact" class="nav-link active">CONTACT ME</a>
+                </li>
+            
+            </ul>
+        </div>
+    </nav>
+    <div class="row mx-5 my-3 mb-5 " style="padding-bottom: 8em;">
+        <div class="col">
+    <div class="card mystyle" style="width: 16rem;">
+        <img src="my.jpg" class="card-img-top" alt="...">
+        <div class="card-body">
+          <p class="card-text"><b>LAKSHMAN</b></p>
+        </div>
+      </div>
+    </div> <br>
+      <div class="col-9 mt-5 bg-#adb5bd mystyle" style="width: 70rem;">
+        <h1 style="color:lightblue;" class=".txtsty"> WELCOME I'M LAKSHMAN  </h1><br>
+        <h1 style="color:lightBlue;"> I BUILD THINGS FOR THE WEB</h1>
+    
+        <h3 style="color:lightBlue;">Web Developer </h3>
+        <h5 style="color:lightBlue;">Able to design web applications that leads to <span style="color:green;">success</span> of overall product</h5>
+      </div>
+    </div>
+    <div class="row mx-4 my-5 mb-5" id="SKILLS" style="padding-bottom: 2em;">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card mystyle" style="width: 18rem;">
+                <img src="frontend.png" class="card-img-top" alt="...">
+                <div class="card-body mystyle">
+                    <p class="card-text">HTML5 & CSS</p>
+                    <p class="card-text">CSS</p>
+                    <p class="card-text">BootSrap </p>
+                    <p class="card-text">JAVA SCRIPT</p>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card mystyle" style="width: 18rem;">
+                <img src="backend.png" class="card-img-top" alt="...">
+                <div class="card-body mystyle">
+                
+                    <p class="card-text">Python</p>
+                    <p class="card-text">Django</p>
+                    <p class="card-text">SQL</p>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card mystyle" style="width: 18rem;">
+                <img src="webtools.png" class="card-img-top" alt="...">
+                <div class="card-body mystyle">
+                
+                    <p class="card-text">Visual Studio Code</p>
+                    <p class="card-text">Figma</p>
+                    <p class="card-text">Github</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-4">
+            <div class="card mystyle" style="width: 18rem;">
+                <img src="databases.png" class="card-img-top" alt="...">
+                <div class="card-body mystyle">
+                    
+                    <p class="card-text">MySQL</p>
+
+                </div>
+            </div>
+        </div>
+    </div> <div class="container my-5" id="Contact">
+        <div class="row mt-5">
+            <div class="col-12 col-sm-6 col-md-4 mb-4 mystyle">
+                <div class="card h-100">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><i class="bi bi-phone-fill"></i>  7981662947</li>
+                        <li class="list-group-item"><i class="bi bi-envelope"></i> thannirulakshman91@gmail.com</li>
+                        <li class="list-group-item"><a href="https://www.linkedin.com/in/lakshman-thanniru-5a7141245"><i class="bi bi-linkedin" ></i> LINKED IN</a></li>
+                        <li class="list-group-item"><a href="https://github.com/LAKSHMAN375"><i class="bi bi-github"></i> LAKSHMAN375</a></li>
+                        <li class="list-group-item"><a href="https://www.hackerrank.com/profile/lakshmantanniru"> HACKER RANK</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-8 mb-4 mystyle">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <form class="row g-3">
+                            <p class="bg-light text-primary"> Fill it To Reach Me!</p>
+                            <div class="col-md-6">
+                                <label for="inputEmail4" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="inputEmail4">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputPassword4" class="form-label">Contact</label>
+                                <input type="text" class="form-control" id="inputPassword4">
+                            </div>
+                            <div class="col-12">
+                                <label for="inputAddress" class="form-label">Email id</label>
+                                <input type="mail" class="form-control" id="inputAddress" placeholder="xyz@domain.com">
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </div>
+
+</div>
+
+</body>
+</html>
